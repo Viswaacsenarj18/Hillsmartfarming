@@ -5,6 +5,8 @@ import { getApiUrl } from "@/config/api";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -14,23 +16,39 @@ const Signup = () => {
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError(""); // Clear error when user types
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const res = await fetch(getApiUrl("/api/auth/signup"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
+    try {
+      console.log("📝 Signup: Submitting form...", { name: form.name, email: form.email });
+      
+      const res = await fetch(getApiUrl("/api/auth/signup"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
 
-    const data = await res.json();
+      const data = await res.json();
+      console.log("📝 Signup Response:", { status: res.status, message: data.message });
 
-    if (res.ok) {
-      navigate("/login");
-    } else {
-      alert(data.message);
+      if (res.ok) {
+        console.log("✅ Signup successful, redirecting to login...");
+        setError("");
+        setTimeout(() => navigate("/login"), 500);
+      } else {
+        console.log("❌ Signup failed:", data.message);
+        setError(data.message || "Signup failed. Please try again.");
+      }
+    } catch (err: any) {
+      console.error("❌ Signup network error:", err);
+      setError("Network error. Check backend connection: " + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,14 +74,23 @@ const Signup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
 
+          {/* ERROR MESSAGE */}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {error}
+            </div>
+          )}
+
           <div>
             <label className="text-sm text-gray-600">Full Name</label>
             <input
               type="text"
               name="name"
+              value={form.name}
               onChange={handleChange}
+              disabled={loading}
               required
-              className="w-full mt-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="w-full mt-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition disabled:bg-gray-100"
             />
           </div>
 
@@ -72,9 +99,11 @@ const Signup = () => {
             <input
               type="email"
               name="email"
+              value={form.email}
               onChange={handleChange}
+              disabled={loading}
               required
-              className="w-full mt-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="w-full mt-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition disabled:bg-gray-100"
             />
           </div>
 
@@ -83,17 +112,20 @@ const Signup = () => {
             <input
               type="password"
               name="password"
+              value={form.password}
               onChange={handleChange}
+              disabled={loading}
               required
-              className="w-full mt-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="w-full mt-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition disabled:bg-gray-100"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition shadow-md"
+            disabled={loading}
+            className="w-full py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition shadow-md disabled:bg-gray-400"
           >
-            Sign Up
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
 
         </form>
