@@ -126,8 +126,6 @@ i18n
           motorFertilizer: "Motor & Fertilizer Control",
           motorPump: "Motor Pump",
           fertilizer: "Fertilizer",
-          on: "ON",
-          off: "OFF",
           soilAnalysisHilly: "Smart Soil Nutrient Analysis (Hilly Region)",
 
           /* ===== Tractor Registration Form ===== */
