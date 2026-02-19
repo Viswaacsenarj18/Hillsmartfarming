@@ -46,10 +46,14 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 /* ================= MongoDB ================= */
+console.log("🔄 Connecting to MongoDB...");
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+  })
   .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+  .catch((err) => console.error("❌ MongoDB Error:", err.message));
 
 /* ================= Routes ================= */
 
@@ -109,7 +113,7 @@ Give structured farming advice.
     console.log("✅ Chat: Response generated successfully");
     res.json({ reply });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("❌ Chat Error:", {
       message: error.message,
       status: error.response?.status,
