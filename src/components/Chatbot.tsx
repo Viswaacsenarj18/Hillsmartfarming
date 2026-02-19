@@ -40,6 +40,8 @@ const Chatbot = () => {
     setLoading(true);
 
     try {
+      console.log("💬 Chat: Sending message...", { userText, apiUrl: API_URL });
+      
       const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: {
@@ -48,7 +50,14 @@ const Chatbot = () => {
         body: JSON.stringify({ message: userText }),
       });
 
+      console.log("💬 Chat: Response status", res.status);
+
       const data = await res.json();
+      console.log("💬 Chat: Response data", data);
+
+      if (!res.ok) {
+        throw new Error(data.reply || `Server error: ${res.status}`);
+      }
 
       setMessages((prev) => [
         ...prev,
@@ -57,12 +66,13 @@ const Chatbot = () => {
           text: data.reply || "No response",
         },
       ]);
-    } catch (error) {
+    } catch (error: any) {
+      console.error("❌ Chat error:", error.message);
       setMessages((prev) => [
         ...prev,
         {
           sender: "bot",
-          text: "⚠️ Server Error. Please try again.",
+          text: `⚠️ Error: ${error.message || 'Server Error. Please try again.'}`,
         },
       ]);
     }

@@ -61,11 +61,20 @@ app.use("/api/auth", authRoutes);
 app.post("/api/chat", async (req, res) => {
   try {
     const userMessage = req.body.message;
+    console.log("💬 Chat request received:", { userMessage });
 
     if (!userMessage) {
+      console.log("❌ Chat: Missing message");
       return res.status(400).json({ reply: "Message is required" });
     }
 
+    // Check if API key is set
+    if (!process.env.OPENROUTER_API_KEY) {
+      console.error("❌ Chat: OPENROUTER_API_KEY not set in environment");
+      return res.status(500).json({ reply: "❌ AI service not configured. Please check backend configuration." });
+    }
+
+    console.log("🔄 Chat: Calling OpenRouter API...");
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -97,14 +106,27 @@ Give structured farming advice.
     const reply =
       response.data.choices?.[0]?.message?.content || "No response";
 
+    console.log("✅ Chat: Response generated successfully");
     res.json({ reply });
 
-  } catch (error) {
-    console.error(
-      "OpenRouter Error:",
-      error.response?.data || error.message
-    );
-    res.status(500).json({ reply: "AI Server Error" });
+  } catch (error: any) {
+    console.error("❌ Chat Error:", {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+    
+    // Provide more specific error messages
+    let reply = "⚠️ AI Service Error";
+    if (error.response?.status === 401) {
+      reply = "❌ API key invalid. Check backend configuration.";
+    } else if (error.response?.status === 429) {
+      reply = "❌ Rate limited. Please wait and try again.";
+    } else if (error.message?.includes("timeout")) {
+      reply = "❌ Request timeout. Please try again.";
+    }
+    
+    res.status(500).json({ reply });
   }
 });
 
