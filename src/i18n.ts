@@ -339,8 +339,6 @@ i18n
           motorFertilizer: "மோட்டார் மற்றும் உர கட்டுப்பாடு",
           motorPump: "மோட்டார் பம்ப்",
           fertilizer: "உர",
-          on: "ஆன்",
-          off: "ஆஃப்",
           soilAnalysisHilly: "மலைப்பகுதி மண் ஊட்டச்சத்து பகுப்பாய்வு",
 
           /* ===== Tractor Registration Form ===== */
@@ -548,8 +546,6 @@ i18n
           motorFertilizer: "ಮೋಟಾರ್ ಮತ್ತು ರಸಗೊಬ್ಬರ ನಿಯಂತ್ರಣ",
           motorPump: "ಮೋಟಾರ್ ಪಂಪ್",
           fertilizer: "ರಸಗೊಬ್ಬರ",
-          on: "ಆನ್",
-          off: "ಆಫ್",
           soilAnalysisHilly: "ಪರ್ವತ ಪ್ರದೇಶದ ಮಣ್ಣಿನ ಪೋಷಕಾಂಶ ವಿಶ್ಲೇಷಣೆ",
 
           /* ===== Tractor Registration Form ===== */
