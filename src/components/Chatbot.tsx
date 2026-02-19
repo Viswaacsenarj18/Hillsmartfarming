@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { getApiUrl } from "@/config/api";
 
 interface Message {
   sender: "user" | "bot";
   text: string;
 }
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = getApiUrl("");
 
 const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
