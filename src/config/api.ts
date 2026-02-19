@@ -6,7 +6,7 @@
 /**
  * Get the correct API base URL based on environment
  * - Development (localhost): http://localhost:5000
- * - Production (Vercel): https://hillbackend.onrender.com
+ * - Production (Vercel): https://hillsmartfarming.onrender.com
  */
 const getApiBaseUrl = (): string => {
   // For Vercel production deployment - always use Render backend
@@ -26,11 +26,11 @@ const getApiBaseUrl = (): string => {
 
   // For Vercel or any production deployment, use Render backend
   if (isVercelProduction || !import.meta.env.DEV) {
-    return 'https://hillbackend.onrender.com';
+    return 'https://hillsmartfarming.onrender.com';
   }
 
   // Final fallback
-  return 'https://hillbackend.onrender.com';
+  return 'https://hillsmartfarming.onrender.com';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
