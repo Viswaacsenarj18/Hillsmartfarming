@@ -127,6 +127,70 @@ const RentTractor = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="page-container py-4 md:py-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground mb-4 md:mb-6 transition-colors text-xs sm:text-sm md:text-base"
+        >
+          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span>{t("backToListing")}</span>
+        </button>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+          <div className="space-y-4 md:space-y-6">
+            <div className="relative rounded-lg sm:rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 aspect-video animate-pulse" />
+            <div className="bg-card rounded-lg sm:rounded-xl border border-border p-4 sm:p-6 md:p-8 space-y-4 animate-pulse">
+              <div className="h-8 bg-muted rounded w-3/4" />
+              <div className="h-4 bg-muted rounded w-1/2" />
+              <div className="space-y-2">
+                <div className="h-4 bg-muted rounded" />
+                <div className="h-4 bg-muted rounded" />
+                <div className="h-4 bg-muted rounded w-2/3" />
+              </div>
+            </div>
+          </div>
+          <div className="space-y-4 md:space-y-6">
+            <div className="bg-card rounded-lg sm:rounded-xl border border-border p-4 sm:p-6 md:p-8 space-y-6 animate-pulse">
+              <div className="h-6 bg-muted rounded w-1/2" />
+              <div className="space-y-4">
+                <div className="h-20 bg-muted rounded" />
+                <div className="h-20 bg-muted rounded" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!tractor) {
+    return (
+      <div className="page-container py-4 md:py-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1 sm:gap-2 text-muted-foreground hover:text-foreground mb-4 md:mb-6 transition-colors text-xs sm:text-sm md:text-base"
+        >
+          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span>{t("backToListing")}</span>
+        </button>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center space-y-4">
+            <AlertTriangle className="h-16 w-16 text-danger mx-auto" />
+            <h2 className="text-xl font-bold text-foreground">{t("errorLoadingData")}</h2>
+            <p className="text-muted-foreground">Tractor not found. Please try again.</p>
+            <button
+              onClick={() => navigate('/tractors')}
+              className="btn-primary"
+            >
+              Back to Tractors
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page-container py-4 md:py-6">
       {/* Back Button */}

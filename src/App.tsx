@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import SensorDetails from "./pages/SensorDetails";
 import TractorListing from "./pages/TractorListing";
 import TractorRegistration from "./pages/TractorRegistration";
+import RentTractor from "./pages/RentTractor";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
                   <Route path="/sensors" element={<SensorDetails />} />
                   <Route path="/tractors" element={<TractorListing />} />
                   <Route path="/register" element={<TractorRegistration />} />
+                  <Route path="/rent/:id" element={<RentTractor />} />
                 </Routes>
               </Layout>
             </ProtectedRoute>
